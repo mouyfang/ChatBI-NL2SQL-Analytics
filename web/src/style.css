@@ -1,0 +1,84 @@
+:root {
+  --bg: #f4f6fa;
+  --panel: #ffffff;
+  --border: #e4e8f0;
+  --text: #1f2937;
+  --text-dim: #6b7280;
+  --accent: #7c3aed;
+  --accent-soft: #f5f1ff;
+  --accent-dark: #6d28d9;
+  --danger: #dc2626;
+  --ok: #16a34a;
+  --code-bg: #0f172a;
+  --radius: 10px;
+  --shadow: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* SQL 代码块 */
+.sql-block {
+  background: var(--code-bg);
+  color: #e2e8f0;
+  font-family: "Cascadia Code", Consolas, Monaco, monospace;
+  font-size: 12.5px;
+  line-height: 1.65;
+  padding: 11px 14px;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}

@@ -1,0 +1,22 @@
+{
+  "name": "chatbi-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ChatBI 自然语言数据分析 - 后端服务",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test:csv": "node src/scripts/test-csv.js",
+    "test:guard": "node src/scripts/test-sqlguard.js",
+    "test:retry": "node src/scripts/test-nl2sql-retry.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
+    "express": "^4.19.2",
+    "multer": "^2.0.0"
+  }
+}
