@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "ChatBI 自然语言数据分析系统 · 架构",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "import-path",
+        "label": "数据导入链路",
+        "focus": ["api", "ingest", "db"],
+        "note": "上传的表格经解析、类型推断后建表导入 SQLite。"
+      },
+      {
+        "id": "query-path",
+        "label": "问答链路",
+        "focus": ["user", "web", "api", "llm", "guard", "db"],
+        "note": "模型生成 SQL，经安全校验后只读执行，结果再交给模型解读并渲染图表。"
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "用户",
+      "sublabel": "浏览器",
+      "pos": [40, 330],
+      "size": [110, 60]
+    },
+    {
+      "id": "web",
+      "type": "frontend",
+      "label": "Vue3 + ECharts",
+      "sublabel": "数据集管理 + 对话",
+      "pos": [190, 330],
+      "size": [160, 60]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "Express API",
+      "sublabel": ":3002 编排中枢",
+      "pos": [400, 330],
+      "size": [150, 60]
+    },
+    {
+      "id": "llm",
+      "type": "external",
+      "label": "DeepSeek API",
+      "sublabel": "NL2SQL + 结果解读",
+      "pos": [400, 140],
+      "size": [150, 60]
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "SQL 安全校验",
+      "sublabel": "白名单 + 拦截写操作",
+      "pos": [620, 330],
+      "size": [170, 60]
+    },
+    {
+      "id": "ingest",
+      "type": "backend",
+      "label": "CSV / Excel 解析",
+      "sublabel": "状态机 + 类型推断",
+      "pos": [400, 520],
+      "size": [150, 60]
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "SQLite",
+      "sublabel": "node:sqlite · 只读连接",
+      "pos": [630, 520],
+      "size": [150, 60]
+    }
+  ],
+  "connections": [
+    { "id": "user-to-web", "from": "user", "to": "web", "label": "HTTPS" },
+    { "id": "web-to-api", "from": "web", "to": "api", "label": "REST + SSE", "labelDy": 54 },
+    {
+      "id": "api-to-llm",
+      "from": "api",
+      "to": "llm",
+      "label": "表结构 + 问题",
+      "variant": "emphasis"
+    },
+    { "id": "api-to-guard", "from": "api", "to": "guard", "label": "生成的 SQL" },
+    {
+      "id": "guard-to-db",
+      "from": "guard",
+      "to": "db",
+      "label": "校验通过后执行",
+      "variant": "emphasis",
+      "labelDy": 24
+    },
+    { "id": "api-to-ingest", "from": "api", "to": "ingest", "label": "上传表格", "labelDy": 24 },
+    { "id": "ingest-to-db", "from": "ingest", "to": "db", "label": "建表导入" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "数据导入",
+      "items": [
+        "自研 CSV 状态机解析器，正确处理引号内的逗号与换行、双引号转义",
+        "类型推断把前导 0 编码与大整数保留为文本，避免精度丢失",
+        "Excel 日期按 UTC 读取，避免东八区读出偏移一天的日期"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "NL2SQL 链路",
+      "items": [
+        "表结构 + 真实样例行注入提示词，模型输出 SQL 与图表配置",
+        "执行失败时把 SQLite 原始报错回传模型自我修正，最多重试 2 次",
+        "图表字段与结果集对不上、结果仅 1 行时自动降级为表格"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "安全设计",
+      "items": [
+        "双层防护：SQL 白名单校验 + SQLite 只读连接执行",
+        "校验前先剥离注释与字符串字面量，避免误报与注释绕过",
+        "安全拦截立即终止、不给重试机会；执行失败才允许自愈"
+      ]
+    }
+  ]
+}

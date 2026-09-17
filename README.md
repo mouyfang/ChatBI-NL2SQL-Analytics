@@ -4,6 +4,10 @@
 
 不需要懂 SQL，也不需要拖拽配置图表——**问一句话就能拿到结果**。
 
+![系统架构](docs/architecture.png)
+
+> 架构图由 [Archify](https://github.com/tt-a1i/archify) 从 `docs/architecture.json` 编译生成，源文件随代码一起版本管理。
+
 ---
 
 ## 解决什么问题
@@ -273,6 +277,9 @@ chatbi/
 │           ├── ChatPanel.vue      对话
 │           ├── ChatMessage.vue    单条消息
 │           └── ResultView.vue     SQL + ECharts + 表格 + 解读
+├── docs/
+│   ├── architecture.json   架构图源文件（Archify 类型化 JSON）
+│   └── architecture.png    架构图（由上面的 JSON 编译生成）
 └── samples/              示例数据集
 ```
 
